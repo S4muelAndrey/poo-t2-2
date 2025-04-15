@@ -31,5 +31,4 @@ if escolha == 3:
 if escolha == 4:
     print("Digite uma frase:")
     frase = input()
-    ultima_palavra = frase.rsplit(maxsplit=1)[-1]
-    print(ultima_palavra)
+    print(frase[ frase.rindex(" ") + 1: ])
