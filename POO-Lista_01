@@ -17,3 +17,12 @@ x.raio = 3
 
 x.calcular_area()
 x.calcular_circunferencia()
+
+class Viagem():
+    def __init__(self):
+        self.km = 0
+        self.horas = 0
+
+    def calc_velocidade(self):
+        self.minutos_reais = 0
+        self.velocidade = 0
