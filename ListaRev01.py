@@ -1,4 +1,5 @@
 import datetime
+import math
 
 print("escolha o exercício: 1, 2, 3, 4... 15:")
 escolha = int(input())
@@ -54,6 +55,7 @@ if escolha == 3:
     print("soma dos pares", sdp)
     print("soma dos ímpares", sdi)
 
+# quarta questão
 if escolha == 4:
     a = input("Digite o primeiro horário no formato hh:mm\n")
     hora = datetime.datetime.strptime(a, "%H:%M")
@@ -65,9 +67,97 @@ if escolha == 4:
     resultado = soma.time()
     print(resultado.strftime("%H:%M"))
 
+# quinta questão
 if escolha ==  5:
-    a = int(input())
+    a = int(input("informe o número do mês\n"))
 
-    meses = {1 : "janeiro", 2 : "fevereiro", 3 : "março", 4 : "abril" , 5 :  "maio",  6 : "junho", "julho" : 7 , 8 : "agosto", 9 : "setembro", 10 : "outrubro", 11 : "novembro", 12 : "dezembro"}
+    meses = {1 : "janeiro", 2 : "fevereiro", 3 : "março", 4 : "abril" , 5 :  "maio",  6 : "junho", 7 : "julho" , 8 : "agosto", 9 : "setembro", 10 : "outrubro", 11 : "novembro", 12 : "dezembro"}
   
-    print(meses[a])
+    if a < 4:
+        print("O mês de", meses[a] ,"é do primeiro trimestre do ano")
+    if a > 3 and a < 7:
+        print("O mês de", meses[a] ,"é do segundo trimestre do ano")
+  
+    if a > 6 and a < 10:
+        print("O mês de", meses[a] ,"é do terceiro trimestre do ano")
+    if a > 9:
+        print("O mês de", meses[a] ,"é do quarto trimestre do ano")
+
+# sexta questão
+if escolha == 6:
+    a = int(input("Digite três valores inteiros\n"))
+    b = int(input())
+    c = int(input())
+    menor = min([a,b,c])
+    maior = max([a,b,c])
+    print("A soma do maior com o menor número é", maior + menor)
+
+# sétima questão
+if escolha == 7:
+    a = float(input("Digite o coeficiente a: "))
+    b = float(input("Digite o coeficiente b: "))
+    c = float(input("Digite o coeficiente c: "))
+
+    if a == 0:
+        if b != 0:
+            x = -c / b
+            print(f"Equação de 1º grau. Raiz: {x}")
+        else:
+            print("Erro" if c != 0 else "Equação indeterminada.")
+    else:
+        delta = b**2 - 4*a*c
+
+        if delta < 0:
+            print("impossível calcular")
+        else:
+            x1 = (-b + math.sqrt(delta)) / (2*a)
+            x2 = (-b - math.sqrt(delta)) / (2*a)
+            print(f"As raízes são: {x1} e {x2}")
+
+# oitava questão
+if escolha == 8:
+    a = int(input("Digite três valores inteiros\n"))
+    b = int(input())
+    c = int(input())
+    d = int(input())
+    
+    if a == b or b == c or c == d or b == d or  a == d or a == c:
+        print("erro")
+    else:
+        menor = min([a,b,c, d])
+        maior = max([a,b,c, d])
+        print("Maior valor =",maior)
+        print("Menor valor =",menor)
+        print("A soma do maior com o menor número é", maior + menor)
+
+# nona questão
+if escolha == 9:
+    hora = input("Digite o horário no formato hh:mm\n")
+
+    try:
+        partes = hora.split(":")
+        if len(partes) != 2:
+            raise ValueError
+        h = int(partes[0])
+        m = int(partes[1])
+    except ValueError:
+        print("Hora Inválida")
+        exit()
+
+    if h < 0 or h > 23 or m < 0 or m > 59:
+        print("Hora Inválida")
+        exit()
+
+    h = h % 12
+
+    angulo_hora = h * 30 + m * 0.5
+    angulo_minuto = m * 6
+
+    diferenca = abs(angulo_hora - angulo_minuto)
+    menor_angulo = diferenca if diferenca <= 180 else 360 - diferenca
+
+    if menor_angulo.is_integer():
+        menor_angulo = int(menor_angulo)
+
+    print(f"Menor ângulo entre os ponteiros = {menor_angulo} graus")
+
