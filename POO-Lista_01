@@ -1,0 +1,19 @@
+import math
+
+class Circulo():
+    def __init__(self):
+        self.raio = 0
+
+    def calcular_area(self):
+        self.area = (self.raio**2)*math.pi
+        print(self.area)
+
+    def calcular_circunferencia(self):
+        self.circunferecia = 2*math.pi * self.raio
+        print(self.circunferecia)
+
+x = Circulo()
+x.raio = 3
+
+x.calcular_area()
+x.calcular_circunferencia()
