@@ -161,3 +161,21 @@ if escolha == 9:
 
     print(f"Menor ângulo entre os ponteiros = {menor_angulo} graus")
 
+if escolha==10:
+    d = input("Digite uma data no formato dd/mm/aaaa\n").split("/")
+    dia = int(d[0])
+    mes = int(d[1])
+    ano = int(d[2])
+
+    if mes < 0 or mes > 12:
+        print("A data informada não é válida")
+    if dia > 31 or dia < 0:
+        print("A data informada não é válida")
+    if mes == 2 and dia >29:
+        print("A data informada não é válida")
+    if mes % 2 == 0 and dia > 31:
+        print("A data informada não é válida")
+    if mes % 2 != 0 and dia > 30:
+        print("A data informada não é válida")
+    if ano < 1900 or ano > 2100:
+        print("A data informada não é válida") 
