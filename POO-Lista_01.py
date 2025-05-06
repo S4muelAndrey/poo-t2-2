@@ -104,9 +104,7 @@ class EntradaCinema():
             elif self.dia_semana == "quarta-feira":
                 self.preco = 8.00
 
-        print(f"o valor da entrada é {self.preco}R$")
-    
-
+        print(f"o valor da entrada é {self.preco:.2f}R$")
 
 
 if escolha == 1:
@@ -132,6 +130,7 @@ if escolha == 3:
     print("saldo:", z.saldo)
     z.deposito()
     print("saldo", z.saldo)
+
 
 if escolha == 4:
     o = EntradaCinema()
