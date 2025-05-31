@@ -135,6 +135,26 @@ class UIEquacaoSegundoGrau:
         except Exception as e:
             print("Erro:", e)
 
+def main():
+    print("=== MENU DE TESTE ===")
+    print("1 - Testar Retângulo")
+    print("2 - Testar Frete")
+    print("3 - Testar Equação do 2º Grau")
+    opcao = input("Escolha uma opção: ")
+
+    if opcao == "1":
+        interface1().executar()
+    elif opcao == "2":
+        Interface2().executar()
+    elif opcao == "3":
+        UIEquacaoSegundoGrau().executar()
+    else:
+        print("Opção inválida.")
+
+if __name__ == "__main__":
+    main()
+
+
 
 #   ---------------------------------------
 #   |       EquacaoSegundoGrau            |
