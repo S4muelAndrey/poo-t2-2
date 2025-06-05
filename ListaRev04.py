@@ -26,11 +26,6 @@ class Viagem:
     def get_destino(self):
         return self.__destino
 
-    def velocidade_media(self):
-        if self.__litros == 0:
-            return 0.0
-        return self.__distancia / self.__litros
-
 
     def Consumo(self, a, b, c):
         self.set_destino(a)
