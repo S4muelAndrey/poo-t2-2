@@ -1,4 +1,3 @@
-
 import datetime
 from enum import Enum
 
@@ -28,7 +27,7 @@ class Boleto:
             self.__situacaoPagamento = Pagamento.EmAberto
         elif self.__valorPago < self.__valorBoleto:
             self.__situacaoPagamento = Pagamento.PagoParcial
-        elif self.__valorPago >= self.__valorBoleto:
+        else:
             self.__situacaoPagamento = Pagamento.Pago
 
     def situacao(self):
@@ -72,29 +71,80 @@ class Boleto:
                 f"Situação: {self.__situacaoPagamento.name}")
 
 
-def boletoUI():
-    print("=== Cadastro de Boleto ===")
-    cod = input("Código de Barras: ")
-    emissao = input("Data de Emissão (YYYY-MM-DD): ")
-    venc = input("Data de Vencimento (YYYY-MM-DD): ")
-    valor = float(input("Valor do Boleto (R$): "))
+class BoletoUI:
+    def __init__(self):
+        self.__boletos = []
 
-    try:
-        data_emissao = datetime.datetime.strptime(emissao, "%Y-%m-%d")
-        data_venc = datetime.datetime.strptime(venc, "%Y-%m-%d")
-        boleto = Boleto(cod, data_emissao, data_venc, valor)
+    def menu(self):
+        while True:
+            print("\n=== MENU BOLETOS ===")
+            print("1. Cadastrar novo boleto")
+            print("2. Listar boletos")
+            print("3. Registrar pagamento")
+            print("4. Sair")
+            opcao = input("Escolha uma opção: ")
 
-        print("\n--- Dados do Boleto ---")
-        print(boleto)
+            if opcao == "1":
+                self.__cadastrar()
+            elif opcao == "2":
+                self.__listar()
+            elif opcao == "3":
+                self.__registrar_pagamento()
+            elif opcao == "4":
+                print("Encerrando sistema de boletos...")
+                break
+            else:
+                print("Opção inválida!")
 
-        opcao = input("\nDeseja registrar um pagamento? (s/n): ").lower()
-        if opcao == 's':
-            valor_pagamento = float(input("Valor pago (R$): "))
-            boleto.pagar(valor_pagamento)
-            print("\n--- Situação Atualizada ---")
+    def __cadastrar(self):
+        try:
+            cod = input("Código de Barras: ")
+            emissao = input("Data de Emissão (YYYY-MM-DD): ")
+            venc = input("Data de Vencimento (YYYY-MM-DD): ")
+            valor = float(input("Valor do Boleto (R$): "))
+
+            data_emissao = datetime.datetime.strptime(emissao, "%Y-%m-%d")
+            data_venc = datetime.datetime.strptime(venc, "%Y-%m-%d")
+            boleto = Boleto(cod, data_emissao, data_venc, valor)
+
+            self.__boletos.append(boleto)
+            print("\n--- Boleto cadastrado ---")
             print(boleto)
 
-    except ValueError as e:
-        print(f"Erro: {e}")
+        except ValueError as e:
+            print(f"Erro: {e}")
 
-boletoUI()
+    def __listar(self):
+        if not self.__boletos:
+            print("Nenhum boleto cadastrado.")
+        else:
+            for b in self.__boletos:
+                print("-" * 30)
+                print(b)
+
+    def __registrar_pagamento(self):
+        cod = input("Informe o código de barras do boleto: ")
+        for b in self.__boletos:
+            if b.get_codBarras() == cod:
+                try:
+                    valor = float(input("Valor pago (R$): "))
+                    b.pagar(valor)
+                    print("\n--- Pagamento registrado ---")
+                    print(b)
+                except ValueError as e:
+                    print(f"Erro ao pagar: {e}")
+                return
+        print("Boleto não encontrado.")
+
+    @staticmethod
+    def executar():
+        BoletoUI.main()
+
+    @staticmethod
+    def main():
+        app = BoletoUI()
+        app.menu()
+
+
+if __name__ == "__main__":
+    BoletoUI.executar()
