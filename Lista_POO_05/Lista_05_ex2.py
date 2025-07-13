@@ -9,67 +9,67 @@ class Pagamento(Enum):
 
 class Boleto:
     def __init__(self, codBarras, dataEmissao, dataVencimento, valorBoleto):
-        self.codBarras = codBarras
-        self.dataEmissao = dataEmissao
-        self.dataVencimento = dataVencimento
-        self.valorBoleto = valorBoleto
-        self.dataPago = None
-        self.valorPago = 0.0
-        self.situacaoPagamento = Pagamento.EmAberto
+        self.__codBarras = codBarras
+        self.__dataEmissao = dataEmissao
+        self.__dataVencimento = dataVencimento
+        self.__valorBoleto = valorBoleto
+        self.__dataPago = None
+        self.__valorPago = 0.0
+        self.__situacaoPagamento = Pagamento.EmAberto
 
     def pagar(self, valorPago):
         if valorPago <= 0:
             raise ValueError("O valor pago deve ser maior que zero.")
         
-        self.valorPago += valorPago
-        self.dataPago = datetime.datetime.now()
+        self.__valorPago += valorPago
+        self.__dataPago = datetime.datetime.now()
 
-        if self.valorPago == 0:
-            self.situacaoPagamento = Pagamento.EmAberto
-        elif self.valorPago < self.valorBoleto:
-            self.situacaoPagamento = Pagamento.PagoParcial
-        elif self.valorPago >= self.valorBoleto:
-            self.situacaoPagamento = Pagamento.Pago
+        if self.__valorPago == 0:
+            self.__situacaoPagamento = Pagamento.EmAberto
+        elif self.__valorPago < self.__valorBoleto:
+            self.__situacaoPagamento = Pagamento.PagoParcial
+        elif self.__valorPago >= self.__valorBoleto:
+            self.__situacaoPagamento = Pagamento.Pago
 
     def situacao(self):
-        return self.situacaoPagamento
+        return self.__situacaoPagamento
 
     def get_codBarras(self):
-        return self.codBarras
+        return self.__codBarras
 
     def get_dataEmissao(self):
-        return self.dataEmissao
+        return self.__dataEmissao
 
     def get_dataVencimento(self):
-        return self.dataVencimento
+        return self.__dataVencimento
 
     def get_dataPago(self):
-        return self.dataPago
+        return self.__dataPago
 
     def get_valorBoleto(self):
-        return self.valorBoleto
+        return self.__valorBoleto
 
     def get_valorPago(self):
-        return self.valorPago
+        return self.__valorPago
 
     def get_situacaoPagamento(self):
-        return self.situacaoPagamento
+        return self.__situacaoPagamento
 
     def set_valorBoleto(self, valor):
         if valor > 0:
-            self.valorBoleto = valor
+            self.__valorBoleto = valor
         else:
             raise ValueError("Valor do boleto deve ser maior que zero.")
 
     def __str__(self):
         return (f"Boleto:\n"
-                f"Código de Barras: {self.codBarras}\n"
-                f"Emissão: {self.dataEmissao.strftime('%d/%m/%Y')}\n"
-                f"Vencimento: {self.dataVencimento.strftime('%d/%m/%Y')}\n"
-                f"Valor do Boleto: R$ {self.valorBoleto:.2f}\n"
-                f"Valor Pago: R$ {self.valorPago:.2f}\n"
-                f"Data do Pagamento: {self.dataPago.strftime('%d/%m/%Y %H:%M') if self.dataPago else 'Não pago'}\n"
-                f"Situação: {self.situacaoPagamento.name}")
+                f"Código de Barras: {self.__codBarras}\n"
+                f"Emissão: {self.__dataEmissao.strftime('%d/%m/%Y')}\n"
+                f"Vencimento: {self.__dataVencimento.strftime('%d/%m/%Y')}\n"
+                f"Valor do Boleto: R$ {self.__valorBoleto:.2f}\n"
+                f"Valor Pago: R$ {self.__valorPago:.2f}\n"
+                f"Data do Pagamento: {self.__dataPago.strftime('%d/%m/%Y %H:%M') if self.__dataPago else 'Não pago'}\n"
+                f"Situação: {self.__situacaoPagamento.name}")
 
 
 def boletoUI():
