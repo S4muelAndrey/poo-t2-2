@@ -2,28 +2,28 @@ import datetime
 
 class Paciente:
     def __init__(self, nome, cpf, telefone, nascimento):
-        self.__nome = nome
-        self.__cpf = cpf
-        self.__telefone = telefone
+        self.set_nome(nome)
+        self.set_cpf(cpf)
+        self.set_telefone(telefone)
         self.set_nascimento(nascimento)
 
     def set_nome(self, nome):
-        if isinstance(nome, str) and nome:
+        if isinstance(nome, str) and nome.strip():
             self.__nome = nome
         else:
             raise ValueError("Nome inválido. Não há um texto.")
 
     def set_cpf(self, cpf):
-        if isinstance(cpf, str) and len(cpf) == 11:
+        if isinstance(cpf, str) and cpf.isdigit() and len(cpf) == 11:
             self.__cpf = cpf
         else:
-            raise ValueError("CPF inválido. Deve ter 11 dígitos.")
+            raise ValueError("CPF inválido. Deve ter 11 dígitos numéricos.")
         
     def set_telefone(self, telefone):
-        if isinstance(telefone, str) and len(telefone) >= 10:
+        if isinstance(telefone, str) and telefone.isdigit() and len(telefone) >= 10:
             self.__telefone = telefone
         else:
-            raise ValueError("Telefone inválido. Deve ter pelo menos 10 dígitos.")
+            raise ValueError("Telefone inválido. Deve ter pelo menos 10 dígitos numéricos.")
 
     def set_nascimento(self, nascimento):
         if isinstance(nascimento, str) and nascimento:
@@ -57,22 +57,70 @@ class Paciente:
         return f"{anos} anos e {meses} meses"
     
     def __str__(self):
-        return f"Paciente(nome={self.__nome}, cpf={self.__cpf}, telefone={self.__telefone}, nascimento={self.__nascimento})"
+        nasc_formatada = self.__nascimento.strftime("%d/%m/%Y")
+        return (f"Paciente:\n"
+                f"Nome: {self.__nome}\n"
+                f"CPF: {self.__cpf}\n"
+                f"Telefone: {self.__telefone}\n"
+                f"Nascimento: {nasc_formatada}\n"
+                f"Idade: {self.idade()}")
 
-# UI de teste
-def pacienteUI():
-    print("=== Cadastro de Paciente ===")
-    nome = input("Nome: ")
-    cpf = input("CPF (somente números): ")
-    telefone = input("Telefone: ")
-    nascimento = input("Data de nascimento (DD/MM/YYYY): ")
 
-    try:
-        paciente = Paciente(nome, cpf, telefone, nascimento)
-        print("\n--- Dados do Paciente ---")
-        print(paciente)
-        print(f"\nIdade: {paciente.idade()}")
-    except ValueError as e:
-        print(f"Erro ao criar paciente: {e}")
+class PacienteUI:
+    def __init__(self):
+        self.__pacientes = []
 
-pacienteUI()
+    def menu(self):
+        while True:
+            print("\n=== MENU PACIENTE ===")
+            print("1. Cadastrar novo paciente")
+            print("2. Listar pacientes")
+            print("3. Sair")
+            opcao = input("Escolha uma opção: ")
+
+            if opcao == "1":
+                self.__cadastrar()
+            elif opcao == "2":
+                self.__listar()
+            elif opcao == "3":
+                print("Encerrando sistema de pacientes...")
+                break
+            else:
+                print("Opção inválida!")
+
+    def __cadastrar(self):
+        print("\n=== Cadastro de Paciente ===")
+        nome = input("Nome: ")
+        cpf = input("CPF (somente números): ")
+        telefone = input("Telefone (somente números): ")
+        nascimento = input("Data de nascimento (DD/MM/YYYY): ")
+
+        try:
+            paciente = Paciente(nome, cpf, telefone, nascimento)
+            self.__pacientes.append(paciente)
+            print("\n--- Paciente cadastrado com sucesso ---")
+            print(paciente)
+        except ValueError as e:
+            print(f"Erro ao criar paciente: {e}")
+
+    def __listar(self):
+        if not self.__pacientes:
+            print("Nenhum paciente cadastrado.")
+        else:
+            print("\n--- Lista de Pacientes ---")
+            for p in self.__pacientes:
+                print("-" * 30)
+                print(p)
+
+    @staticmethod
+    def executar():
+        PacienteUI.main()
+
+    @staticmethod
+    def main():
+        app = PacienteUI()
+        app.menu()
+
+
+if __name__ == "__main__":
+    PacienteUI.executar()
