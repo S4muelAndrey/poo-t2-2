@@ -22,7 +22,7 @@ class ManterHorarioUI:
             for obj in horarios: 
                 cliente = View.cliente_listar_id(obj.get_id_cliente())
                 servico = View.servico_listar_id(obj.get_id_servico())
-                profissional = View.servico_listar_id(obj.get_id_profissional())
+                profissional = View.profissional_listar_id(obj.get_id_profissional())
                 if cliente != None:
                     cliente = cliente.get_nome()
                 if servico != None: 
@@ -76,7 +76,7 @@ class ManterHorarioUI:
                 if cliente != None: id_cliente = cliente.get_id()
                 if servico != None: id_servico = servico.get_id()
                 if profissional != None: id_profissional = profissional.get_id()
-                View.horario_atualizar(op.get_id(), datetime.strptime(data,"%d/%m/%Y%H:%M"), confirmado, id_cliente, id_servico, id_profissional)
+                View.horario_atualizar(op.get_id(), datetime.strptime(data,"%d/%m/%Y% H:%M"), confirmado, id_cliente, id_servico, id_profissional)
                 st.success("Horário atualizado com sucesso")
         
     def excluir():
