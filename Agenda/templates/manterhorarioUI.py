@@ -4,6 +4,7 @@ from views import View
 import time
 from datetime import datetime
 
+
 class ManterHorarioUI:
     def main():
         st.header("Cadastro de Horários")
@@ -27,8 +28,7 @@ class ManterHorarioUI:
                     cliente = cliente.get_nome()
                 if servico != None: 
                     servico = servico.get_descricao()
-                if profissional != None: 
-                    profissional = profissional.get_descricao()
+                if profissional != None: profissional = profissional.get_nome()
                 dic.append({"id" : obj.get_id(), "data" : obj.get_data(), "confirmado" : obj.get_confirmado(), "cliente" : cliente, "serviço" : servico})
             df = pd.DataFrame(dic)
             st.dataframe(df)
