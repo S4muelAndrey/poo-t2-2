@@ -27,6 +27,7 @@ class IndexUI:
             admin = st.session_state["usuario_nome"] == "admin"
             tipo = st.session_state.get("tipo_usuario", "")
 
+
             if admin:
                 IndexUI.menu_admin()
             elif tipo == "profissional":
