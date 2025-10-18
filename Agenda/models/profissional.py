@@ -9,7 +9,6 @@ class Profissional:
         self.set_email(email)
         self.set_senha(senha)
 
-    # Getters e setters
     def get_id(self): return self.__id
     def set_id(self, id): self.__id = id
 

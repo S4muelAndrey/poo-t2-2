@@ -76,6 +76,12 @@ class View:
             if h.get_id_profissional() == id_profissional:
                 r.append(h)
         return r
+    def horario_filtrar_cliente(id_cliente):
+        r = []
+        for h in View.horario_listar():
+            if h.get_id_profissional() == id_cliente:
+                r.append(h)
+        return r
     def horario_atualizar(id, data, confirmado, id_cliente, id_servico, id_profissional):
         c = Horario(id, data)
         c.set_confirmado(confirmado)
