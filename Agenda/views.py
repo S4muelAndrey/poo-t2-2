@@ -70,6 +70,14 @@ class View:
         r = HorarioDAO.listar()
         r.sort(key = lambda obj : obj.get_data())
         return r
+    @staticmethod
+    def horario_listar_id(id):
+        horarios = View.horario_listar()
+        for h in horarios:
+            if h.get_id() == id:
+                return h
+        return None
+
     def horario_filtrar_profissional(id_profissional):
         r = []
         for h in View.horario_listar():

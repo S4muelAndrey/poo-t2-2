@@ -12,35 +12,34 @@ class ConfirmarServicoUI:
         id_profissional = st.session_state["usuario_id"]
 
         horarios = View.horario_filtrar_profissional(id_profissional)
-
         if len(horarios) == 0:
-            st.info("Você não possui serviços agendados.")
+            st.info("Nenhum horário disponível para confirmação.")
             return
 
-        opcoes = []
+        opcoes_horarios = []
         for h in horarios:
             cliente = View.cliente_listar_id(h.get_id_cliente())
-            nome_cliente = cliente.get_nome() if cliente else "Cliente não encontrado"
-            descricao = f"{h.get_id()} - {h.get_data()} - {nome_cliente} - Confirmado: {h.get_confirmado()}"
-            opcoes.append((descricao, h))
+            cliente_nome = cliente.get_nome() if cliente else "Sem cliente"
+            opcoes_horarios.append(f"{h.get_id()} - {h.get_data()} - Confirmado: {h.get_confirmado()}")
 
-        selecionado = st.selectbox(
-            "Informe o horário para confirmar",
-            options=opcoes,
-            format_func=lambda x: x[0] 
-        )
+        opcao_horario = st.selectbox("Informe o horário para confirmar", opcoes_horarios)
+        id_horario = int(opcao_horario.split(" - ")[0])
+        horario = View.horario_listar_id(id_horario)
 
-        if selecionado:
-            horario = selecionado[1]
-            cliente = View.cliente_listar_id(horario.get_id_cliente())
-            servico = View.servico_listar_id(horario.get_id_servico())
+        clientes = View.cliente_listar()
+        opcoes_clientes = []
+        for c in clientes:
+            opcoes_clientes.append(f"{c.get_id()} - {c.get_nome()} - {c.get_email()} - {c.get_fone()}")
 
-            if cliente and servico:
-                st.write(f"**Cliente:** {cliente.get_nome()} — {cliente.get_email()}")
-                st.write(f"**Serviço:** {servico.get_descricao()}")
-            
-            if st.button("Confirmar"):
-                horario.set_confirmado(True)
-                View.horario_atualizar(horario)
-                st.success("Serviço confirmado com sucesso! ✅")
-                st.balloons()
+        cliente_escolhido = st.selectbox("Cliente", opcoes_clientes, index=0 if len(opcoes_clientes) > 0 else None)
+
+        if st.button("Confirmar"):
+            if horario is None:
+                st.error("Horário inválido.")
+                return
+
+            horario.set_confirmado(True)
+            View.horario_atualizar(horario)
+            st.success("Serviço confirmado com sucesso!")
+
+            st.rerun()
