@@ -11,6 +11,7 @@ from templates.abriragendaUI import AbrirAgendaUI
 from templates.visualizaragendaUI import VisualizarAgendaUI
 from templates.visualizarservicosUI import VisualizarServicosUI
 from templates.confirmarservicoUI import ConfirmarServicoUI
+from templates.alterarsenhaUI import AlterarSenhaUI
 from views import View
 import streamlit as st
 
@@ -59,11 +60,12 @@ class IndexUI:
         if op == "Confirmar Serviço": ConfirmarServicoUI.main()
 
     def menu_admin():
-        op = st.sidebar.selectbox("Menu", ["Cadastro de Clientes", "Cadastro de Serviços", "Cadastro de Horários", "Cadastro de Profissionais"])
+        op = st.sidebar.selectbox("Menu", ["Cadastro de Clientes", "Cadastro de Serviços", "Cadastro de Horários", "Cadastro de Profissionais", "Alterar Senha"])
         if op == "Cadastro de Clientes": ManterClienteUI.main()
         if op == "Cadastro de Serviços": ManterServicoUI.main()
         if op == "Cadastro de Horários": ManterHorarioUI.main()
         if op == "Cadastro de Profissionais": ManterProfissionalUI.main()
+        if op == "Alterar Senha": AlterarSenhaUI.main()
 
     def sair_do_sistema():
         if st.sidebar.button("Sair"):
