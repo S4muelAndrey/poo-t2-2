@@ -13,13 +13,13 @@ class View:
     def cliente_listar_id(id):
         return ClienteDAO.listar_id(id)
     def cliente_inserir(nome, email, fone, senha):
-        exist = False
+        exist = True
         for c in View.cliente_listar():
             if c.get_email().lower() == email.lower():
                 exist = True
                 raise ValueError("Já existe um cliente com esse email")
-            else: exist = True
-        if (exist):
+            else: exist = False
+        if (exist==False):
             cliente = Cliente(0, nome, email, fone, senha)
             ClienteDAO.inserir(cliente)
     def cliente_atualizar(id, nome, email, fone, senha):
