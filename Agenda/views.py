@@ -6,7 +6,6 @@ from datetime import datetime
 
 class View:
 
-#cliente
     def cliente_listar():
         r = ClienteDAO.listar()
         r.sort(key = lambda obj : obj.get_nome())
@@ -19,6 +18,7 @@ class View:
             if c.get_email().lower() == email.lower():
                 exist = True
                 raise ValueError("Já existe um cliente com esse email")
+            else: exist = True
         if (exist):
             cliente = Cliente(0, nome, email, fone, senha)
             ClienteDAO.inserir(cliente)
