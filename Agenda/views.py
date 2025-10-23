@@ -14,13 +14,19 @@ class View:
     def cliente_listar_id(id):
         return ClienteDAO.listar_id(id)
     def cliente_inserir(nome, email, fone, senha):
-        cliente = Cliente(0, nome, email, fone, senha)
-        ClienteDAO.inserir(cliente)
+        exist = False
+        for c in View.cliente_listar():
+            if c.get_email().lower() == email.lower():
+                exist = True
+                raise ValueError("Já existe um cliente com esse email")
+        if (exist):
+            cliente = Cliente(0, nome, email, fone, senha)
+            ClienteDAO.inserir(cliente)
     def cliente_atualizar(id, nome, email, fone, senha):
         cliente = Cliente(id, nome, email, fone, senha)
         ClienteDAO.atualizar(cliente)
     def cliente_excluir(id):
-        cliente = Cliente(id, "", "", "", "")
+        cliente = Cliente(id, " ", " ", " ", " ")
         ClienteDAO.excluir(cliente)
     def cliente_criar_admin():
         for c in View.cliente_listar():
