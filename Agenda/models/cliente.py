@@ -27,8 +27,8 @@ class Cliente:
     def set_email(self, email):
         try: 
             if email is None or email == "": raise ValueError("E-mail não pode ser vazio")
-            self.__email = email
-        except: return "Erro"
+            else: self.__email = email
+        except: ValueError("Deu erro no email")
     def set_fone(self, fone): 
         try: 
             if fone is None or fone == "": raise ValueError("Fone não pode ser vazio")

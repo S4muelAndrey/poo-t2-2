@@ -14,20 +14,32 @@ class View:
         return ClienteDAO.listar_id(id)
     def cliente_inserir(nome, email, fone, senha):
         exist = True
+        missing = False
         for c in View.cliente_listar():
             if c.get_email().lower() == email.lower():
                 exist = True
                 raise ValueError("Já existe um cliente com esse email")
             else: exist = False
-        if (exist==False):
+            if nome() == "" or email == "" or fone == "" or senha == "":
+                missing = True
+                raise ValueError("Falta informação no cliente")
+            else: missing = False
+        if (exist==False) and (missing==False):
             cliente = Cliente(0, nome, email, fone, senha)
             ClienteDAO.inserir(cliente)
     def cliente_atualizar(id, nome, email, fone, senha):
         cliente = Cliente(id, nome, email, fone, senha)
         ClienteDAO.atualizar(cliente)
     def cliente_excluir(id):
-        cliente = Cliente(id, " ", " ", " ", " ")
-        ClienteDAO.excluir(cliente)
+        agendou = False
+        for h in View.horario_listar():
+            if h.get_id_cliente == id:
+                agendou = True
+                raise ValueError("Não pode excluir alguém que agendou.")
+            else: agendou = False
+            if agendou == False:
+                cliente = Cliente(id, " ", " ", " ", " ")
+                ClienteDAO.excluir(cliente)
     def cliente_criar_admin():
         for c in View.cliente_listar():
             if c.get_email() == "admin": return
@@ -83,7 +95,6 @@ class View:
             if h.get_id() == id:
                 return h
         return None
-
     def horario_filtrar_profissional(id_profissional):
         r = []
         for h in View.horario_listar():

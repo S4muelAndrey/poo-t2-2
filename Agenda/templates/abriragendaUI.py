@@ -17,7 +17,6 @@ class AbrirAgendaUI:
                 hora_ini = datetime.strptime(horario_inicio, "%H:%M").time()
                 hora_fim = datetime.strptime(horario_final, "%H:%M").time()
                 intervalo_min = int(intervalo)
-
                 inicio = datetime.combine(data, hora_ini)
                 fim = datetime.combine(data, hora_fim)
                 delta = timedelta(minutes=intervalo_min)
