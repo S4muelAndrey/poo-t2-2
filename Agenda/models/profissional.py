@@ -10,22 +10,50 @@ class Profissional:
         self.set_senha(senha)
 
     def get_id(self): return self.__id
-    def set_id(self, id): self.__id = id
-
     def get_nome(self): return self.__nome
-    def set_nome(self, nome): self.__nome = nome
-
     def get_especialidade(self): return self.__especialidade
-    def set_especialidade(self, especialidade): self.__especialidade = especialidade
-
     def get_conselho(self): return self.__conselho
-    def set_conselho(self, conselho): self.__conselho = conselho
-
     def get_email(self): return self.__email
-    def set_email(self, email): self.__email = email
-
     def get_senha(self): return self.__senha
-    def set_senha(self, senha): self.__senha = senha
+    
+
+
+    def set_id(self, id):
+        try: 
+            if id is None or id == "": raise ValueError("ID não pode ser vazio")
+            self.__id = id
+        except Exception as Erro: raise ValueError(Erro)
+
+    def set_nome(self, nome):
+        try:
+            if nome is None or nome =="": raise ValueError("Nome não pode ser vazio")
+            self.__nome = nome
+        except Exception as Erro: raise ValueError(Erro)
+
+    def set_especialidade(self, especialidade): 
+        try:
+            if especialidade is None or especialidade == "": raise ValueError("Especialidade não pode ser vazio")
+            self.__especialidade = especialidade
+        except Exception as Erro: raise ValueError(Erro)
+
+    def set_conselho(self, conselho): 
+        try:
+            if conselho is None or conselho == "": raise ValueError("Conselho não deve ser vazio")
+            self.__conselho = conselho
+        except Exception as Erro: raise ValueError(Erro)
+
+
+    def set_email(self, email): 
+        try:
+            if email is None or email == "": raise ValueError("E-mail não deve ser vazio")
+            self.__email = email
+        except Exception as Erro: raise ValueError(Erro)
+
+    def set_senha(self, senha): 
+        try:
+            if senha is None or senha == "": raise ValueError("Senha não deve ser vazio")
+            self.__senha = senha
+        except Exception as Erro: raise ValueError(Erro)
 
     def __str__(self):
         return f"{self.__id} - {self.__nome} ({self.__especialidade})"
