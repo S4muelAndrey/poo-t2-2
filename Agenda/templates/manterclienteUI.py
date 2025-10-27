@@ -30,14 +30,22 @@ class ManterClienteUI:
 
         if st.button("Inserir"):
             try:
+                for c in View.cliente_listar():
+                    if c.get_email().lower() == email.lower():
+                        st.warning("Já existe um cliente cadastrado com esse e-mail.")
+                        return
+
                 View.cliente_inserir(nome, email, fone, senha)
                 st.success("✅ Cliente inserido com sucesso!")
-                time.sleep(2)
+                time.sleep(1)
                 st.rerun()
             except ValueError as e:
-                st.error(f"❌ Erro: {e}")
+                st.error(f"Erro de validação: {e}")
             except Exception as e:
-                st.error(f"⚠️ Erro inesperado: {e}")
+                import traceback
+                tb = traceback.format_exc()
+                st.error("Erro inesperado (veja abaixo):")
+                st.code(tb)
 
     def atualizar():
         st.subheader("Atualizar cliente existente")
