@@ -19,7 +19,12 @@ class Horario:
     def get_id_profissional(self): return self.__id_profissional
 
     # setters
-    def set_confirmado(self, confirmado): self.__confirmado = confirmado
+    def set_confirmado(self, confirmado): 
+        try:
+            if confirmado == None: raise ValueError("Confirmado deve ser True ou False")
+            self.__confirmado = confirmado
+        except Exception as Erro: raise ValueError(Erro)
+
     def set_id_cliente(self, id_cliente): self.__id_cliente = id_cliente
     def set_id_servico(self, id_servico): self.__id_servico = id_servico
     def set_id_profissional(self, id_profissional): self.__id_profissional = id_profissional
