@@ -31,15 +31,13 @@ class View:
         cliente = Cliente(id, nome, email, fone, senha)
         ClienteDAO.atualizar(cliente)
     def cliente_excluir(id):
-        agendou = False
         for h in View.horario_listar():
-            if h.get_id_cliente == id:
-                agendou = True
-                raise ValueError("Não pode excluir alguém que agendou.")
-            else: agendou = False
-            if agendou == False:
-                cliente = Cliente(id, " ", " ", " ", " ")
-                ClienteDAO.excluir(cliente)
+            if h.get_id_cliente() == id:
+                raise ValueError("Não é possível excluir um cliente que já possui agendamentos.")
+
+        cliente = Cliente(id, "", "", "", "")
+        ClienteDAO.excluir(cliente)
+
     def cliente_criar_admin():
         for c in View.cliente_listar():
             if c.get_email() == "admin": return
