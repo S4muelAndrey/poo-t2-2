@@ -97,9 +97,11 @@ class View:
         r.sort(key= lambda h : h.get_data())
         return r        
     def horario_inserir(data, confirmado, id_cliente, id_servico, id_profissional):
-        #for h in View.horario_listar():
-            #if h.profissional    VOU CONTINUAR AMANHÃ 
-
+        if isinstance(data, str):
+            data = datetime.fromisoformat(data)
+        for h in View.horario_listar():
+            if h.get_id_profissional() == id_profissional and h.get_data() == data:
+                raise ValueError("O profissional já possui um horário nesta data e hora.")
 
         c = Horario(0, data)
         c.set_confirmado(confirmado)
@@ -107,6 +109,7 @@ class View:
         c.set_id_servico(id_servico)
         c.set_id_profissional(id_profissional)
         HorarioDAO.inserir(c)
+
     def horario_listar():
 
         r = HorarioDAO.listar()

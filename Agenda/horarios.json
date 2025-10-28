@@ -6,5 +6,21 @@
         "id_cliente": 6,
         "id_servico": 1,
         "id_profissional": 1
+    },
+    {
+        "id": 2,
+        "data": "2025-10-28 13:10:00",
+        "confirmado": false,
+        "id_cliente": 6,
+        "id_servico": 1,
+        "id_profissional": 1
+    },
+    {
+        "id": 3,
+        "data": "2025-10-28 10:10:00",
+        "confirmado": false,
+        "id_cliente": 6,
+        "id_servico": 1,
+        "id_profissional": 1
     }
 ]
