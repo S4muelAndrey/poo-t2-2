@@ -30,7 +30,7 @@ class ManterProfissionalUI:
 
         if st.button("Inserir"):
             View.profissional_inserir(nome, especialidade, conselho, email, senha)
-            st.success("Profissional inserido com sucesso!")
+            st.success("✅ Profissional inserido com sucesso!")
             time.sleep(2)
             st.rerun()
 

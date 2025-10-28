@@ -19,6 +19,15 @@ class Horario:
     def get_id_profissional(self): return self.__id_profissional
 
     # setters
+    def set_data(self,data):
+        if data is None:
+            raise ValueError("Data inválida")
+        if isinstance(data, str):
+            data = datetime.fromisoformat(data)
+        if data.year < 2025:
+            raise ValueError("Ano deve ser após 2025.")
+        self.__data = data
+
     def set_confirmado(self, confirmado): 
         try:
             if confirmado == None: raise ValueError("Confirmado deve ser True ou False")

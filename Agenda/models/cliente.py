@@ -1,4 +1,3 @@
-# models/cliente.py
 import json
 
 class Cliente:
@@ -16,36 +15,50 @@ class Cliente:
     def get_fone(self): return self.__fone
     def get_senha(self): return self.__senha
 
-    # setters (validação leve; lançam ValueError quando inválido)
+    # setters usando try/except
     def set_id(self, id):
-        # permite 0, números e strings não vazias; bloqueia None ou string vazia
-        if id is None:
-            raise ValueError("ID não pode ser None")
-        if isinstance(id, str) and id == "":
-            raise ValueError("ID não pode ser vazio")
-        self.__id = id
+        try:
+            if id is None:
+                raise ValueError
+            if isinstance(id, str) and id.strip() == "":
+                raise ValueError
+            self.__id = id
+        except Exception:
+            raise ValueError("ID inválido (não pode ser None ou vazio)")
 
     def set_nome(self, nome):
-        if nome is None or (isinstance(nome, str) and nome.strip() == ""):
-            raise ValueError("Nome não pode ser vazio")
-        self.__nome = nome
+        try:
+            if nome is None or nome.strip() == "":
+                raise ValueError
+            self.__nome = nome
+        except Exception:
+            raise ValueError("Nome inválido (não pode ser vazio)")
 
     def set_email(self, email):
-        if email is None or (isinstance(email, str) and email.strip() == ""):
-            raise ValueError("E-mail não pode ser vazio")
-        self.__email = email
+        try:
+            if email is None or email.strip() == "":
+                raise ValueError
+            self.__email = email
+        except Exception:
+            raise ValueError("E-mail inválido (não pode ser vazio)")
 
     def set_fone(self, fone):
-        if fone is None or (isinstance(fone, str) and fone.strip() == ""):
-            raise ValueError("Fone não pode ser vazio")
-        self.__fone = fone
+        try:
+            if fone is None or fone.strip() == "":
+                raise ValueError
+            self.__fone = fone
+        except Exception:
+            raise ValueError("Fone inválido (não pode ser vazio)")
 
     def set_senha(self, senha):
-        if senha is None or (isinstance(senha, str) and senha.strip() == ""):
-            raise ValueError("Senha não pode ser vazia")
-        self.__senha = senha
+        try:
+            if senha is None or senha.strip() == "":
+                raise ValueError
+            self.__senha = senha
+        except Exception:
+            raise ValueError("Senha inválida (não pode ser vazia)")
 
-    # serialização / desserialização (nomes compatíveis com seu código original)
+    # serialização / desserialização
     def to_json(self):
         return {
             "id": self.__id,
@@ -76,23 +89,17 @@ class ClienteDAO:
                 for dic in list_dic:
                     obj = Cliente.from_json(dic)
                     cls.__objetos.append(obj)
-        except FileNotFoundError:
-            # arquivo não existe ainda: retorna lista vazia
-            cls.__objetos = []
-        except json.JSONDecodeError:
-            # arquivo inválido/corrompido: ignora e retorna lista vazia
+        except (FileNotFoundError, json.JSONDecodeError):
             cls.__objetos = []
 
     @classmethod
     def salvar(cls):
-        # sempre escreve explicitamente uma lista de dicts
         with open(cls.arquivo, mode="w", encoding="utf-8") as arquivo:
             json.dump([obj.to_json() for obj in cls.__objetos], arquivo, indent=4, ensure_ascii=False)
 
     @classmethod
     def inserir(cls, obj):
         cls.abrir()
-        # calcula novo id (maior existente + 1)
         id_max = 0
         for aux in cls.__objetos:
             try:
@@ -100,7 +107,6 @@ class ClienteDAO:
                     id_max = aux.get_id()
             except Exception:
                 pass
-        # atualiza id interno mesmo que set_id valide — usar atributo privado evita validação ambígua
         obj._Cliente__id = id_max + 1
         cls.__objetos.append(obj)
         cls.salvar()
@@ -126,7 +132,6 @@ class ClienteDAO:
                 cls.__objetos[i] = obj
                 cls.salvar()
                 return
-        # se não encontrou, adiciona
         cls.__objetos.append(obj)
         cls.salvar()
 
