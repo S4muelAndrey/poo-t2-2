@@ -20,16 +20,13 @@ class Horario:
 
     # setters
     def set_data(self, data):
-        try:
             if data is None:
                 raise ValueError("Data inválida")
             if isinstance(data, str):
                 data = datetime.fromisoformat(data)
             if data.year < 2025:
                 raise ValueError("Ano deve ser após 2025.")
-        except Exception as e:
-            raise ValueError(f"Erro ao definir data: {e}")
-        self.__data = data
+            self.__data = data
 
     def set_confirmado(self, confirmado): 
         try:
