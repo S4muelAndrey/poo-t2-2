@@ -4,7 +4,7 @@ from datetime import datetime
 class Horario:
     def __init__(self, id, data):
         self.__id = id
-        self.__data = data
+        self.set_data(data)
         self.__confirmado = False
         self.__id_cliente = None
         self.__id_servico = None
@@ -19,13 +19,16 @@ class Horario:
     def get_id_profissional(self): return self.__id_profissional
 
     # setters
-    def set_data(self,data):
-        if data is None:
-            raise ValueError("Data inválida")
-        if isinstance(data, str):
-            data = datetime.fromisoformat(data)
-        if data.year < 2025:
-            raise ValueError("Ano deve ser após 2025.")
+    def set_data(self, data):
+        try:
+            if data is None:
+                raise ValueError("Data inválida")
+            if isinstance(data, str):
+                data = datetime.fromisoformat(data)
+            if data.year < 2025:
+                raise ValueError("Ano deve ser após 2025.")
+        except Exception as e:
+            raise ValueError(f"Erro ao definir data: {e}")
         self.__data = data
 
     def set_confirmado(self, confirmado): 
@@ -55,6 +58,12 @@ class Horario:
             "id_servico": self.__id_servico,
             "id_profissional": self.__id_profissional
         }
+
+
+    def __str__(self):
+        if isinstance(self.__data, datetime):
+            return self.__data.strftime("%d/%m/%Y %H:%M")
+        return str(self.__data)
 
     @staticmethod
     def from_dict(d):
