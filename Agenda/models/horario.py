@@ -1,4 +1,5 @@
 import json
+from models.dao import DAO
 from datetime import datetime
 
 class Horario:
@@ -82,47 +83,21 @@ class Horario:
         return h
 
 
-class HorarioDAO:
-    arquivo = "horarios.json"
+class HorarioDAO(DAO):
+    @classmethod
+    def salvar(cls):
+        with open("horarios.json", mode="w") as arquivo:
+            json.dump(cls._objetos, arquivo, default = Horario.to_json)
 
-    @staticmethod
-    def salvar(lista):
-        with open(HorarioDAO.arquivo, "w", encoding="utf-8") as f:
-            json.dump([obj.to_dict() for obj in lista], f, indent=4, ensure_ascii=False)
-
-    @staticmethod
-    def abrir():
+    @classmethod
+    def abrir(cls):
+        cls._objetos = []
         try:
-            with open(HorarioDAO.arquivo, "r", encoding="utf-8") as f:
-                lista = json.load(f)
-                return [Horario.from_dict(obj) for obj in lista]
+            with open("horarios.json", mode="r") as arquivo:
+                list_dic = json.load(arquivo)
+                for dic in list_dic:
+                    obj = Horario.from_json(dic)
+                    cls._objetos.append(obj)
+
         except FileNotFoundError:
-            return []
-        except json.JSONDecodeError:
-            return []
-
-    @staticmethod
-    def listar():
-        return HorarioDAO.abrir()
-
-    @staticmethod
-    def inserir(horario):
-        lista = HorarioDAO.abrir()
-        novo_id = max([obj.get_id() for obj in lista], default=0) + 1
-        horario._Horario__id = novo_id
-        lista.append(horario)
-        HorarioDAO.salvar(lista)
-
-    @staticmethod
-    def atualizar(horario):
-        lista = HorarioDAO.abrir()
-        for i, obj in enumerate(lista):
-            if obj.get_id() == horario.get_id():
-                lista[i] = horario
-        HorarioDAO.salvar(lista)
-
-    @staticmethod
-    def excluir(horario):
-        lista = HorarioDAO.abrir()
-        lista = [obj for obj in lista if obj.get_id() != horario.get_id()]
-        HorarioDAO.salvar(lista)
+            pass

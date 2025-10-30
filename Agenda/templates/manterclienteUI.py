@@ -12,6 +12,8 @@ class ManterClienteUI:
         with tab3: ManterClienteUI.atualizar()
         with tab4: ManterClienteUI.excluir()
 
+
+
     def listar():
         clientes = View.cliente_listar()
         if len(clientes) == 0:
@@ -86,4 +88,5 @@ class ManterClienteUI:
                 except ValueError as e:
                     st.error(f"❌ Erro: {e}")
                 except Exception as e:
-                    st.error(f"⚠️ Erro inesperado: {e}")
+                    st.warning(f"⚠️ Erro inesperado: {e}")
+

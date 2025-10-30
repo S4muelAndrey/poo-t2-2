@@ -1,4 +1,5 @@
 import json
+from models.dao import DAO
 
 class Cliente:
     def __init__(self, id, nome, email, fone, senha):
@@ -76,67 +77,21 @@ class Cliente:
         return f"{self.__id} - {self.__nome} - {self.__email} - {self.__fone} - {self.__senha}"
 
 
-class ClienteDAO:
-    __objetos = []
-    arquivo = "clientes.json"
+class ClienteDAO(DAO):
+    @classmethod
+    def salvar(cls):
+        with open("clientes.json", mode="w") as arquivo:
+            json.dump(cls._objetos, arquivo, default = Cliente.to_json)
 
     @classmethod
     def abrir(cls):
-        cls.__objetos = []
+        cls._objetos = []
         try:
-            with open(cls.arquivo, mode="r", encoding="utf-8") as arquivo:
+            with open("clientes.json", mode="r") as arquivo:
                 list_dic = json.load(arquivo)
                 for dic in list_dic:
                     obj = Cliente.from_json(dic)
-                    cls.__objetos.append(obj)
-        except (FileNotFoundError, json.JSONDecodeError):
-            cls.__objetos = []
+                    cls._objetos.append(obj)
 
-    @classmethod
-    def salvar(cls):
-        with open(cls.arquivo, mode="w", encoding="utf-8") as arquivo:
-            json.dump([obj.to_json() for obj in cls.__objetos], arquivo, indent=4, ensure_ascii=False)
-
-    @classmethod
-    def inserir(cls, obj):
-        cls.abrir()
-        id_max = 0
-        for aux in cls.__objetos:
-            try:
-                if aux.get_id() > id_max:
-                    id_max = aux.get_id()
-            except Exception:
-                pass
-        obj._Cliente__id = id_max + 1
-        cls.__objetos.append(obj)
-        cls.salvar()
-
-    @classmethod
-    def listar(cls):
-        cls.abrir()
-        return cls.__objetos
-
-    @classmethod
-    def listar_id(cls, id):
-        cls.abrir()
-        for obj in cls.__objetos:
-            if obj.get_id() == id:
-                return obj
-        return None
-
-    @classmethod
-    def atualizar(cls, obj):
-        cls.abrir()
-        for i, aux in enumerate(cls.__objetos):
-            if aux.get_id() == obj.get_id():
-                cls.__objetos[i] = obj
-                cls.salvar()
-                return
-        cls.__objetos.append(obj)
-        cls.salvar()
-
-    @classmethod
-    def excluir(cls, obj):
-        cls.abrir()
-        cls.__objetos = [aux for aux in cls.__objetos if aux.get_id() != obj.get_id()]
-        cls.salvar()
+        except FileNotFoundError:
+            pass

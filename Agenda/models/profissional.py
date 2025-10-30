@@ -1,4 +1,5 @@
 import json
+from models.dao import DAO
 
 class Profissional:
     def __init__(self, id, nome, especialidade, conselho, email, senha):
@@ -72,48 +73,21 @@ class Profissional:
     def from_json(dic):
         return Profissional(dic["id"], dic["nome"], dic["especialidade"], dic["conselho"], dic["email"], dic["senha"])
 
-class ProfissionalDAO:
+class ProfissionalDAO(DAO):
     @classmethod
-    def inserir(cls, profissional):
-        dados = cls.listar()
-        max_id = max([p.get_id() for p in dados], default=0)
-        profissional.set_id(max_id + 1)
-        dados.append(profissional)
-        cls.__salvar(dados)
+    def salvar(cls):
+        with open("profissionais.json", mode="w") as arquivo:
+            json.dump(cls._objetos, arquivo, default = Profissional.to_json)
 
     @classmethod
-    def atualizar(cls, profissional):
-        dados = cls.listar()
-        for i, p in enumerate(dados):
-            if p.get_id() == profissional.get_id():
-                dados[i] = profissional
-                break
-        cls.__salvar(dados)
-
-    @classmethod
-    def excluir(cls, profissional):
-        dados = cls.listar()
-        dados = [p for p in dados if p.get_id() != profissional.get_id()]
-        cls.__salvar(dados)
-
-    @classmethod
-    def listar(cls):
+    def abrir(cls):
+        cls._objetos = []
         try:
-            with open("profissionais.json", mode="r") as f:
-                lista_dic = json.load(f)
+            with open("profissionais.json", mode="r") as arquivo:
+                list_dic = json.load(arquivo)
+                for dic in list_dic:
+                    obj = Profissional.from_json(dic)
+                    cls._objetos.append(obj)
+
         except FileNotFoundError:
-            lista_dic = []
-        return [Profissional.from_json(dic) for dic in lista_dic]
-
-    @classmethod
-    def listar_id(cls, id):
-        dados = cls.listar()
-        for p in dados:
-            if p.get_id() == id:
-                return p
-        return None
-
-    @classmethod
-    def __salvar(cls, dados):
-        with open("profissionais.json", mode="w") as f:
-            json.dump([p.to_json() for p in dados], f, indent=4)
+            pass
