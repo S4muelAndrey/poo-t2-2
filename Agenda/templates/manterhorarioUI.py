@@ -13,7 +13,7 @@ class ManterHorarioUI:
         with tab2: ManterHorarioUI.inserir()
         with tab3: ManterHorarioUI.atualizar()
         with tab4: ManterHorarioUI.excluir()
-
+                
             
     def listar():
         horarios = View.horario_listar()
@@ -29,7 +29,7 @@ class ManterHorarioUI:
                 if servico != None: 
                     servico = servico.get_descricao()
                 if profissional != None: profissional = profissional.get_nome()
-                dic.append({"id" : obj.get_id(), "data" : obj.get_data(), "confirmado" : obj.get_confirmado(), "cliente" : cliente, "serviço" : servico})
+                dic.append({"id" : obj.get_id(), "data" : obj.get_data(), "urgencia" : obj.get_urgencia(),"confirmado" : obj.get_confirmado(), "cliente" : cliente, "serviço" : servico})
             df = pd.DataFrame(dic)
             st.dataframe(df)
 
@@ -38,10 +38,12 @@ class ManterHorarioUI:
         servicos = View.servico_listar()
         profissionais = View.profissional_listar()
         data = st.text_input("Informe a data e horário do serviço", datetime.now().strftime("%d/%m/%Y %H:%M"))
+        urgencia = st.selectbox("Informe o grau de urgência", (1, 2, 3), index=None, key="key_inserir")
         confirmado = st.checkbox("Confirmado")
         cliente = st.selectbox("Informe o cliente", clientes, index = None)
         servico = st.selectbox("Informe o serviço", servicos, index = None)
         profissional = st.selectbox("Informe o profissional", profissionais, index = None)
+                            
         if st.button("Inserir"):
             try:    
                 id_cliente = None 
@@ -50,7 +52,7 @@ class ManterHorarioUI:
                 if cliente != None: id_cliente = cliente.get_id()
                 if servico != None: id_servico = servico.get_id()
                 if profissional != None: id_profissional = profissional.get_id()
-                View.horario_inserir(datetime.strptime(data, "%d/%m/%Y %H:%M"), confirmado, id_cliente, id_servico, id_profissional)
+                View.horario_inserir(datetime.strptime(data, "%d/%m/%Y %H:%M"), urgencia, confirmado, id_cliente, id_servico, id_profissional)
                 st.success("Horário inserido com sucesso")
             except Exception as e:
                 st.error(f"Erro ao definir data: {e}")
@@ -64,6 +66,7 @@ class ManterHorarioUI:
             profissionais = View.profissional_listar()
             op = st.selectbox("Atualização de Horários", horarios)
             data = st.text_input("Informe a nova data e horário do serviço",op.get_data().strftime("%d/%m/%Y %H:%M"))
+            urgencia = st.selectbox("Informe o grau de urgência", (1, 2, 3), index=None, key="key_atualizar")
             confirmado = st.checkbox("Nova confirmação", op.get_confirmado())
             id_cliente = None if op.get_id_cliente() in [0, None] else op.get_id_cliente()
             id_servico = None if op.get_id_servico() in [0, None] else op.get_id_servico()
@@ -79,7 +82,7 @@ class ManterHorarioUI:
                     if cliente != None: id_cliente = cliente.get_id()
                     if servico != None: id_servico = servico.get_id()
                     if profissional != None: id_profissional = profissional.get_id()
-                    View.horario_atualizar(op.get_id(), datetime.strptime(data,"%d/%m/%Y% H:%M"), confirmado, id_cliente, id_servico, id_profissional)
+                    View.horario_atualizar(op.get_id(), datetime.strptime(data,"%d/%m/%Y% H:%M"), urgencia, confirmado, id_cliente, id_servico, id_profissional)
                     st.success("Horário atualizado com sucesso")
                 except Exception as e:
                     st.error(f"❌ Erro ao atualizar horário: {e}")

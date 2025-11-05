@@ -96,14 +96,14 @@ class View:
                 r.append(h)
         r.sort(key= lambda h : h.get_data())
         return r        
-    def horario_inserir(data, confirmado, id_cliente, id_servico, id_profissional):
+    def horario_inserir(data, urgencia, confirmado, id_cliente, id_servico, id_profissional):
         if isinstance(data, str):
             data = datetime.fromisoformat(data)
         for h in View.horario_listar():
             if h.get_id_profissional() == id_profissional and h.get_data() == data:
                 raise ValueError("O profissional já possui um horário nesta data e hora.")
 
-        c = Horario(0, data)
+        c = Horario(0, data, urgencia)
         c.set_confirmado(confirmado)
         c.set_id_cliente(id_cliente)
         c.set_id_servico(id_servico)
@@ -137,9 +137,9 @@ class View:
             if h.get_id_profissional() == id_cliente:
                 r.append(h)
         return r
-    def horario_atualizar(id, data, confirmado, id_cliente, id_servico, id_profissional):
+    def horario_atualizar(id, data, urgencia, confirmado, id_cliente, id_servico, id_profissional):
 
-        c = Horario(id, data)
+        c = Horario(id, data, urgencia)
         c.set_confirmado(confirmado)
         c.set_id_cliente(id_cliente)
         c.set_id_servico(id_servico)
@@ -150,7 +150,7 @@ class View:
             if h.get_id_cliente() != "" or h.get_id_cliente() != None:
                 raise ValueError("Não deve excluir uma agenda de um cliente")
 
-        c = Horario(id, None)
+        c = Horario(id, None, None)
         HorarioDAO.excluir(c)
 
 #profissional
