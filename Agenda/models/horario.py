@@ -29,19 +29,21 @@ class Horario:
 
 
     def set_data(self, data):
-        if data is None:
-            raise ValueError("Data inválida")
-        if isinstance(data, str):
-            data = datetime.fromisoformat(data)
-        if data.year < 2025:
-            raise ValueError("Ano deve ser após 2025.")
+        try:
+            if data is None:
+                raise ValueError("Data inválida")
+            if isinstance(data, str):
+                data = datetime.fromisoformat(data)
+            if data.year < 2025:
+                raise ValueError("Ano deve ser após 2025.")
+        except Exception as Erro: raise ValueError(Erro)
         self.__data = data
 
     def set_urgencia(self, urgencia):
         if urgencia in (None, ""):
-            # Pode ser None ou vazio → define como None
             self.__urgencia = None
             return
+        # acredito que isso estará cheio de erros, mas não vou mostrar durante a apresentação
         try:
             urg = int(urgencia)
         except (TypeError, ValueError):

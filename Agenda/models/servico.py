@@ -11,9 +11,22 @@ class Servico:
     def get_descricao(self): return self.__descricao
     def get_valor(self): return self.__valor
 
-    def set_id(self, id): self.__id = id
-    def set_descricao(self, descricao): self.__descricao = descricao
-    def set_valor(self, valor): self.__valor = valor
+    def set_id(self, id):
+        try: 
+            if id is None or id == "": raise ValueError("ID não pode ser vazio")
+            self.__id = id
+        except Exception as Erro: raise ValueError(Erro)
+
+    def set_descricao(self, descricao):
+        try:
+            if descricao is None or descricao =="": raise ValueError("Descrição não pode ser vazio")
+            self.__descricao = descricao
+        except Exception as Erro: raise ValueError(Erro)
+
+    def set_valor(self, valor):
+        try:
+            if valor is None or int(valor.strip()) < 0: raise ValueError("Valor deve ser maior que 0")
+        except Exception as Erro: raise ValueError(Erro)
 
     def to_json(self):
         dic = {"id":self.__id, "descricao":self.__descricao, "valor":self.__valor}
