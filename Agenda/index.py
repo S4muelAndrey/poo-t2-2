@@ -12,6 +12,7 @@ from templates.visualizaragendaUI import VisualizarAgendaUI
 from templates.visualizarservicosUI import VisualizarServicosUI
 from templates.confirmarservicoUI import ConfirmarServicoUI
 from templates.alterarsenhaUI import AlterarSenhaUI
+from templates.alterarurgenciaUI import AlterarUrgencia
 from views import View
 import streamlit as st
 
@@ -53,10 +54,11 @@ class IndexUI:
         if op == "Visualizar Serviços": VisualizarServicosUI.main()
             
     def menu_profissional():
-        op = st.sidebar.selectbox("Menu", ["Meus Dados", "Abrir Minha Agenda", "Visualizar Agenda", "Confirmar Serviço"])
+        op = st.sidebar.selectbox("Menu", ["Meus Dados", "Abrir Minha Agenda", "Visualizar Agenda", "Atualizar Urgência","Confirmar Serviço"])
         if op == "Meus Dados": PerfilProfissionalUI.main()
         if op == "Abrir Minha Agenda": AbrirAgendaUI.main()
         if op == "Visualizar Agenda": VisualizarAgendaUI.main()
+        if op == "Atualizar Urgência": AlterarUrgencia.main()
         if op == "Confirmar Serviço": ConfirmarServicoUI.main()
 
     def menu_admin():

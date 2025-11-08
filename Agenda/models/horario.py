@@ -112,7 +112,6 @@ class Horario:
         h.set_id_profissional(d.get("id_profissional"))
         return h
     
-    @staticmethod
     def to_json(self):
         dic = {"id":self.__id, "data":self.__data.strftime("%d/%m/%Y %H:%M"), "urgencia":self.__urgencia, "confirmado":self.__confirmado, "id_cliente":self.__id_cliente, "id_servico":self.__id_servico, "id_profissional":self.__id_profissional}
         return dic

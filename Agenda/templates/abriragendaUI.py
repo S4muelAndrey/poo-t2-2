@@ -26,6 +26,7 @@ class AbrirAgendaUI:
                 while inicio < fim:
                     View.horario_inserir(
                         inicio,   # agora vai como datetime
+                        None,     # urgência
                         False,    # confirmado
                         None,     # cliente
                         None,     # serviço

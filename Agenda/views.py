@@ -83,7 +83,7 @@ class View:
         ServicoDAO.atualizar(servico)
     def servico_excluir(id):
 
-        servico = Servico(id, "", 0)
+        servico = Servico(id, "aa", 0)
         ServicoDAO.excluir(servico)
 
 #horário
@@ -134,7 +134,7 @@ class View:
 
         r = []
         for h in View.horario_listar():
-            if h.get_id_profissional() == id_cliente:
+            if h.get_id_cliente() == id_cliente:
                 r.append(h)
         return r
     def horario_atualizar(id, data, urgencia, confirmado, id_cliente, id_servico, id_profissional):

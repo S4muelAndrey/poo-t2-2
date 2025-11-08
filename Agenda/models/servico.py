@@ -25,13 +25,14 @@ class Servico:
 
     def set_valor(self, valor):
         try:
-            if valor is None or int(valor.strip()) < 0: raise ValueError("Valor deve ser maior que 0")
+            if valor is None or int(valor) < 0: raise ValueError("Valor deve ser maior que 0")
         except Exception as Erro: raise ValueError(Erro)
+        self.__valor = valor
 
     def to_json(self):
         dic = {"id":self.__id, "descricao":self.__descricao, "valor":self.__valor}
         return dic
-    
+
     @staticmethod
     def from_json(dic):
         return Servico(dic["id"], dic["descricao"], dic["valor"])
